@@ -26,9 +26,9 @@
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
       color:var(--ink);
-      overflow:hidden;
       background:#f4f2ef;
       position:relative;
+      overflow:auto;
     }
     body::before{
       content:"";
@@ -51,7 +51,7 @@
     }
 
     .wrap{
-      height:100%;
+      min-height:100%;
       padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
       display:flex;
       flex-direction:column;
@@ -59,11 +59,17 @@
 
     /* Top bar */
     .topbar{
+      position:sticky;
+      top:0;
+      z-index:20;
       padding:14px 18px;
       display:flex;
       justify-content:space-between;
       align-items:center;
       gap:10px;
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(231,226,218,.7);
     }
     .brand{display:flex; align-items:center; gap:10px; letter-spacing:.5px;}
     .seal{
@@ -85,28 +91,29 @@
       color:var(--muted);
       box-shadow: 0 8px 18px rgba(0,0,0,.05);
       backdrop-filter: blur(10px);
+      white-space:nowrap;
+    }
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;}
+
+    /* Page layout (stacked sections) */
+    main{
+      width:100%;
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 18px;
+      display:flex;
+      flex-direction:column;
+      gap:18px;
     }
 
-    /* Slider */
-    .slider{flex:1; position:relative; overflow:hidden;}
-    .track{
-      height:100%;
+    section.inv{
+      scroll-margin-top: 90px; /* so sticky bar doesn't cover heading */
       display:flex;
-      transition: transform .45s cubic-bezier(.2,.8,.2,1);
-      will-change: transform;
-      touch-action: pan-y;
-    }
-    .page{
-      min-width:100%;
-      height:100%;
-      padding: 8px 18px 18px;
-      display:flex;
-      align-items:center;
       justify-content:center;
     }
+
     .card{
-      width:min(540px, 94vw);
-      height:min(780px, 78vh);
+      width:min(560px, 96vw);
       background: var(--card);
       border:1px solid var(--stroke);
       border-radius: var(--radius);
@@ -125,7 +132,6 @@
     }
 
     .content{
-      height:100%;
       padding:22px 22px 20px;
       display:flex;
       flex-direction:column;
@@ -133,12 +139,11 @@
     }
 
     h1,h2,h3,p{margin:0}
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;}
 
-    /* Cover image (sharp) with glass/blur overlay */
+    /* Cover image */
     .cover-image{
       width:100%;
-      height:240px;
+      height:260px;
       border-radius:18px;
       background-image: url('https://i.postimg.cc/DZthvxcZ/92f685f7-1de6-4c9d-acd6-42ce4990e943.jpg');
       background-size: cover;
@@ -217,7 +222,7 @@
     }
 
     .btnRow{
-      margin-top:auto;
+      margin-top:8px;
       display:flex;
       gap:10px;
       justify-content:center;
@@ -251,7 +256,7 @@
       display:grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap:12px;
-      margin-top:10px;
+      margin-top:6px;
     }
     .tile{
       border:1px solid var(--stroke);
@@ -295,12 +300,7 @@
       text-align:left;
       direction:ltr;
     }
-    .desc{
-      flex:1;
-      display:flex;
-      flex-direction:column;
-      gap:2px;
-    }
+    .desc{flex:1; display:flex; flex-direction:column; gap:2px;}
     .desc b{font-size:14px}
     .desc span{font-size:12px;color:var(--muted);line-height:1.6}
 
@@ -340,48 +340,7 @@
       box-shadow: 0 8px 16px rgba(0,0,0,.05);
       white-space:nowrap;
     }
-    iframe{border:0; width:100%; height:190px}
-
-    .nav{
-      padding: 12px 18px 18px;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      gap:10px;
-    }
-    .dot{
-      width:9px;height:9px;border-radius:999px;
-      background: rgba(0,0,0,.18);
-      transition: all .2s ease;
-    }
-    .dot.active{
-      width:22px;
-      background: rgba(199,176,139,.9);
-    }
-
-    .hint{
-      position:absolute;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:70px;
-      font-size:12px;
-      color:var(--muted);
-      background:#ffffffb8;
-      border:1px solid var(--stroke);
-      padding:8px 12px;
-      border-radius:999px;
-      box-shadow: 0 10px 20px rgba(0,0,0,.05);
-      backdrop-filter: blur(10px);
-      pointer-events:none;
-      opacity:0;
-      animation: pop 2.4s ease 1.1s 1 forwards;
-    }
-    @keyframes pop{
-      0%{opacity:0; transform:translateX(-50%) translateY(10px)}
-      20%{opacity:1; transform:translateX(-50%) translateY(0)}
-      80%{opacity:1}
-      100%{opacity:0}
-    }
+    iframe{border:0; width:100%; height:200px}
 
     /* Floating music button */
     .music-fab{
@@ -408,16 +367,19 @@
       gap:10px;
       user-select:none;
     }
-    .music-dot{
-      width:9px;height:9px;border-radius:99px;
-      background: rgba(0,0,0,.25);
-    }
+    .music-dot{width:9px;height:9px;border-radius:99px;background: rgba(0,0,0,.25);}
     .music-dot.on{ background: rgba(199,176,139,.95); }
+
+    footer{
+      text-align:center;
+      color: rgba(107,107,107,.9);
+      font-size:12px;
+      padding: 8px 0 22px;
+    }
 
     @media (max-width:420px){
       .names{font-size:34px}
-      .card{height:min(760px, 80vh)}
-      .btn{min-width: 160px}
+      .btn{min-width:160px}
       .cover-image{height:220px}
     }
   </style>
@@ -425,9 +387,8 @@
 
 <body>
 
-<!-- ===== Music (IMPORTANT: replace MUSIC_URL with your mp3 link) ===== -->
+<!-- ===== Music ===== -->
 <audio id="bgm" loop preload="auto" crossorigin="anonymous">
-  <!-- Example placeholder: put your MP3 direct link here -->
   <source id="bgmSrc" src="" type="audio/mpeg">
 </audio>
 
@@ -447,198 +408,193 @@
     <div class="pill mono" id="todayPill">—</div>
   </div>
 
-  <div class="slider" id="slider">
-    <div class="track" id="track">
+  <main>
 
-      <!-- PAGE 1: COVER -->
-      <section class="page">
-        <div class="card">
-          <div class="content">
-            <div class="cover-image"></div>
+    <!-- SECTION 1: COVER -->
+    <section class="inv" id="s1">
+      <div class="card">
+        <div class="content">
+          <div class="cover-image"></div>
 
-            <div class="title">
-              <div class="subtitle" id="tagline">You are invited</div>
-              <div class="names" id="names1">Marco</div>
-              <div class="amp">&</div>
-              <div class="names" id="names2">Martha</div>
-              <div class="divider"></div>
-              <div class="bigSeal"><span id="sealInitials">M♥M</span></div>
-            </div>
+          <div class="title">
+            <div class="subtitle">You are invited</div>
+            <div class="names">Marco</div>
+            <div class="amp">&</div>
+            <div class="names">Martha</div>
+            <div class="divider"></div>
+            <div class="bigSeal"><span>M♥M</span></div>
+          </div>
 
-            <p class="quote" id="coverLine">
-              Together with their families, Marco and Martha invite you to celebrate their wedding.
-            </p>
+          <p class="quote">
+            Together with their families, Marco and Martha invite you to celebrate their wedding.
+          </p>
 
-            <div class="btnRow">
-              <button class="btn primary" id="btnNext1">Begin / Swipe</button>
-              <a class="btn" id="btnAddCalendar" href="#" target="_blank" rel="noopener">Add to Calendar</a>
-            </div>
+          <div class="btnRow">
+            <a class="btn" id="btnAddCalendar" href="#" target="_blank" rel="noopener">Add to Calendar</a>
+            <button class="btn primary" data-goto="s2">Next</button>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- PAGE 2: DETAILS -->
-      <section class="page">
-        <div class="card">
-          <div class="content">
-            <div class="title">
-              <div class="subtitle">Details</div>
-              <h2 style="text-align:center; font-family: Georgia, serif; font-size:26px;">The Wedding Day</h2>
-              <div class="divider"></div>
+    <!-- SECTION 2: DETAILS -->
+    <section class="inv" id="s2">
+      <div class="card">
+        <div class="content">
+          <div class="title">
+            <div class="subtitle">Details</div>
+            <h2 style="text-align:center; font-family: Georgia, serif; font-size:26px;">The Wedding Day</h2>
+            <div class="divider"></div>
+          </div>
+
+          <p class="quote">
+            A formal celebration, and your presence would mean the world to us.
+          </p>
+
+          <div class="grid">
+            <div class="tile">
+              <div class="k">Date</div>
+              <div class="v" id="dateText">—</div>
+              <div class="s" id="dayText">—</div>
             </div>
 
-            <p class="quote">
-              A formal celebration, and your presence would mean the world to us.
-            </p>
-
-            <div class="grid">
-              <div class="tile">
-                <div class="k">Date</div>
-                <div class="v" id="dateText">—</div>
-                <div class="s" id="dayText">—</div>
-              </div>
-
-              <div class="tile">
-                <div class="k">Ceremony</div>
-                <div class="v">5:00 PM</div>
-                <div class="s">Church</div>
-              </div>
-
-              <div class="tile">
-                <div class="k">Reception</div>
-                <div class="v">6:30 PM</div>
-                <div class="s">La Novia (Villa)</div>
-              </div>
-
-              <div class="tile">
-                <div class="k">Dress Code</div>
-                <div class="v">Formal</div>
-                <div class="s">Kindly dress accordingly</div>
-              </div>
-
-              <div class="tile">
-                <div class="k">Parking</div>
-                <div class="v">Free Parking</div>
-                <div class="s">Available at the venue</div>
-              </div>
+            <div class="tile">
+              <div class="k">Ceremony</div>
+              <div class="v">5:00 PM</div>
+              <div class="s">Church</div>
             </div>
 
-            <div class="btnRow">
-              <button class="btn" id="btnPrev2">Back</button>
-              <button class="btn primary" id="btnNext2">Next</button>
+            <div class="tile">
+              <div class="k">Reception</div>
+              <div class="v">6:30 PM</div>
+              <div class="s">La Novia (Villa)</div>
+            </div>
+
+            <div class="tile">
+              <div class="k">Dress Code</div>
+              <div class="v">Formal</div>
+              <div class="s">Kindly dress accordingly</div>
+            </div>
+
+            <div class="tile">
+              <div class="k">Parking</div>
+              <div class="v">Free Parking</div>
+              <div class="s">Available at the venue</div>
             </div>
           </div>
-        </div>
-      </section>
 
-      <!-- PAGE 3: COUNTDOWN -->
-      <section class="page">
-        <div class="card">
-          <div class="content">
-            <div class="title">
-              <div class="subtitle">Countdown</div>
-              <h2 style="text-align:center; font-family: Georgia, serif; font-size:26px;">Until We Celebrate</h2>
-              <div class="divider"></div>
-            </div>
-
-            <div class="grid" style="margin-top:14px">
-              <div class="tile"><div class="k">Days</div><div class="v" id="dd">—</div><div class="s">Days</div></div>
-              <div class="tile"><div class="k">Hours</div><div class="v" id="hh">—</div><div class="s">Hours</div></div>
-              <div class="tile"><div class="k">Minutes</div><div class="v" id="mm">—</div><div class="s">Minutes</div></div>
-              <div class="tile"><div class="k">Seconds</div><div class="v" id="ss">—</div><div class="s">Seconds</div></div>
-            </div>
-
-            <p class="quote" style="margin-top:12px">
-              We cannot wait to celebrate with you.
-            </p>
-
-            <div class="btnRow">
-              <button class="btn" id="btnPrev3">Back</button>
-              <button class="btn primary" id="btnNext3">Next</button>
-            </div>
+          <div class="btnRow">
+            <button class="btn" data-goto="s1">Back</button>
+            <button class="btn primary" data-goto="s3">Next</button>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- PAGE 4: PROGRAM -->
-      <section class="page">
-        <div class="card">
-          <div class="content">
-            <div class="title">
-              <div class="subtitle">Schedule</div>
-              <h2 style="text-align:center; font-family: Georgia, serif; font-size:26px;">Order of Events</h2>
-              <div class="divider"></div>
-            </div>
+    <!-- SECTION 3: COUNTDOWN -->
+    <section class="inv" id="s3">
+      <div class="card">
+        <div class="content">
+          <div class="title">
+            <div class="subtitle">Countdown</div>
+            <h2 style="text-align:center; font-family: Georgia, serif; font-size:26px;">Until We Celebrate</h2>
+            <div class="divider"></div>
+          </div>
 
-            <div class="list" id="timeline"></div>
+          <div class="grid">
+            <div class="tile"><div class="k">Days</div><div class="v" id="dd">—</div><div class="s">Days</div></div>
+            <div class="tile"><div class="k">Hours</div><div class="v" id="hh">—</div><div class="s">Hours</div></div>
+            <div class="tile"><div class="k">Minutes</div><div class="v" id="mm">—</div><div class="s">Minutes</div></div>
+            <div class="tile"><div class="k">Seconds</div><div class="v" id="ss">—</div><div class="s">Seconds</div></div>
+          </div>
 
-            <div class="btnRow">
-              <button class="btn" id="btnPrev4">Back</button>
-              <button class="btn primary" id="btnNext4">Next</button>
-            </div>
+          <p class="quote">
+            We cannot wait to celebrate with you.
+          </p>
+
+          <div class="btnRow">
+            <button class="btn" data-goto="s2">Back</button>
+            <button class="btn primary" data-goto="s4">Next</button>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- PAGE 5: LOCATIONS -->
-      <section class="page">
-        <div class="card">
-          <div class="content">
-            <div class="title">
-              <div class="subtitle">Locations</div>
-              <h2 style="text-align:center; font-family: Georgia, serif; font-size:26px;">Ceremony & Reception</h2>
-              <div class="divider"></div>
-            </div>
+    <!-- SECTION 4: SCHEDULE -->
+    <section class="inv" id="s4">
+      <div class="card">
+        <div class="content">
+          <div class="title">
+            <div class="subtitle">Schedule</div>
+            <h2 style="text-align:center; font-family: Georgia, serif; font-size:26px;">Order of Events</h2>
+            <div class="divider"></div>
+          </div>
 
-            <div class="mapgrid">
-              <div class="mapCard">
-                <div class="mapHead">
-                  <div>
-                    <b>St. Anthony the Great Church — Zahraa El Maadi</b><br/>
-                    <span>5:00 PM — Ceremony</span>
-                  </div>
-                  <div class="mapActions">
-                    <a class="miniBtn" href="https://maps.app.goo.gl/3tpzk1J72SNa438aA" target="_blank" rel="noopener">Open in Google Maps</a>
-                  </div>
+          <div class="list" id="timeline"></div>
+
+          <div class="btnRow">
+            <button class="btn" data-goto="s3">Back</button>
+            <button class="btn primary" data-goto="s5">Next</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: LOCATIONS -->
+    <section class="inv" id="s5">
+      <div class="card">
+        <div class="content">
+          <div class="title">
+            <div class="subtitle">Locations</div>
+            <h2 style="text-align:center; font-family: Georgia, serif; font-size:26px;">Ceremony & Reception</h2>
+            <div class="divider"></div>
+          </div>
+
+          <div class="mapgrid">
+            <div class="mapCard">
+              <div class="mapHead">
+                <div>
+                  <b>St. Anthony the Great Church — Zahraa El Maadi</b><br/>
+                  <span>5:00 PM — Ceremony</span>
                 </div>
-                <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                  src="https://www.google.com/maps?q=St.%20Anthony%20the%20Great%20Church%20Zahraa%20El%20Maadi&output=embed"></iframe>
-              </div>
-
-              <div class="mapCard">
-                <div class="mapHead">
-                  <div>
-                    <b>La Novia wedding venue</b><br/>
-                    <span>6:30 PM — Reception</span>
-                  </div>
-                  <div class="mapActions">
-                    <a class="miniBtn" href="https://maps.app.goo.gl/HqVEuU17rrmYpFe8A" target="_blank" rel="noopener">Open in Google Maps</a>
-                  </div>
+                <div class="mapActions">
+                  <a class="miniBtn" href="https://maps.app.goo.gl/3tpzk1J72SNa438aA" target="_blank" rel="noopener">Open in Google Maps</a>
                 </div>
-                <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                  src="https://www.google.com/maps?q=La%20Novia%20wedding%20venue&output=embed"></iframe>
               </div>
+              <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps?q=St.%20Anthony%20the%20Great%20Church%20Zahraa%20El%20Maadi&output=embed"></iframe>
             </div>
 
-            <p class="quote" style="margin-top:10px">
-              Formal attire is kindly requested.<br/>
-              <b>Free parking is available at the venue.</b>
-            </p>
-
-            <div class="btnRow">
-              <button class="btn" id="btnPrev5">Back</button>
-              <button class="btn primary" id="btnFinish">Done ✅</button>
+            <div class="mapCard">
+              <div class="mapHead">
+                <div>
+                  <b>La Novia wedding venue</b><br/>
+                  <span>6:30 PM — Reception</span>
+                </div>
+                <div class="mapActions">
+                  <a class="miniBtn" href="https://maps.app.goo.gl/HqVEuU17rrmYpFe8A" target="_blank" rel="noopener">Open in Google Maps</a>
+                </div>
+              </div>
+              <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                src="https://www.google.com/maps?q=La%20Novia%20wedding%20venue&output=embed"></iframe>
             </div>
           </div>
+
+          <p class="quote">
+            Formal attire is kindly requested.<br/>
+            <b>Free parking is available at the venue.</b>
+          </p>
+
+          <div class="btnRow">
+            <button class="btn" data-goto="s4">Back</button>
+            <button class="btn primary" data-goto="s1">Back to Top</button>
+          </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-    </div>
-
-    <div class="hint">Swipe left / right 👈👉</div>
-  </div>
-
-  <div class="nav" id="dots"></div>
+    <footer>Marco & Martha — 24 January 2026</footer>
+  </main>
 </div>
 
 <script>
@@ -646,105 +602,39 @@
    EDIT THESE ONLY
 ========================= */
 const MUSIC_URL = ""; 
-// حط هنا لينك MP3 مباشر (ينتهي بـ .mp3). مثال:
+// Put a DIRECT MP3 link here (ends with .mp3), example:
 // const MUSIC_URL = "https://yourdomain.com/song.mp3";
 
-const INV = {
-  couple: { name1: "Marco", name2: "Martha", initials: "M♥M" },
-  event: {
-    // Countdown to ceremony time (Cairo)
-    dateTimeISO: "2026-01-24T17:00:00+02:00",
-    dateLocale: "en-GB"
-  },
-  timeline: [
-    { time: "5:00 PM",  title: "Ceremony",          note: "Church service" },
-    { time: "6:30 PM",  title: "Reception Arrival", note: "Villa — La Novia" },
-    { time: "6:45 PM",  title: "Welcome Drinks",    note: "Guests reception" },
-    { time: "7:15 PM",  title: "Grand Entrance",    note: "Zaffa" },
-    { time: "7:30 PM",  title: "Dancing",           note: "Let the party begin" },
-    { time: "8:15 PM",  title: "Champagne Moment",  note: "A toast to the night" },
-    { time: "8:45 PM",  title: "Dinner Buffet",     note: "Buffet opens" },
-    { time: "10:00 PM", title: "Surprise Dance",    note: "A special performance" },
-    { time: "10:30 PM", title: "Memories & Photos", note: "Lots of photos together" }
-  ],
-  guestPersonalization: true // use ?g=Ahmed
-};
+const EVENT_ISO = "2026-01-24T17:00:00+02:00"; // ceremony time (Cairo)
 
 /* =========================
-   Helpers / App
+   Helpers
 ========================= */
 const $ = (id)=>document.getElementById(id);
 function pad(n){ return String(n).padStart(2,"0"); }
 
 function formatDateParts(iso){
   const d = new Date(iso);
-  const dayName = d.toLocaleDateString(INV.event.dateLocale,{weekday:"long"});
-  const dateStr = d.toLocaleDateString(INV.event.dateLocale,{year:"numeric", month:"long", day:"numeric"});
+  const dayName = d.toLocaleDateString("en-GB",{weekday:"long"});
+  const dateStr = d.toLocaleDateString("en-GB",{year:"numeric", month:"long", day:"numeric"});
   return { dayName, dateStr };
 }
 
 function buildCalendarLink(){
-  const start = new Date(INV.event.dateTimeISO);
+  const start = new Date(EVENT_ISO);
   const end = new Date(start.getTime() + 2*60*60*1000);
   const fmt = (dt)=>{
     const z = new Date(dt.getTime());
     return `${z.getUTCFullYear()}${pad(z.getUTCMonth()+1)}${pad(z.getUTCDate())}T${pad(z.getUTCHours())}${pad(z.getUTCMinutes())}${pad(z.getUTCSeconds())}Z`;
   };
-  const text = encodeURIComponent(`${INV.couple.name1} & ${INV.couple.name2} Wedding`);
-  const details = encodeURIComponent(`Wedding of ${INV.couple.name1} & ${INV.couple.name2}`);
-  const location = encodeURIComponent(`St. Anthony the Great Church — Zahraa El Maadi / La Novia wedding venue`);
+  const text = encodeURIComponent("Marco & Martha Wedding");
+  const details = encodeURIComponent("Wedding of Marco & Martha");
+  const location = encodeURIComponent("St. Anthony the Great Church — Zahraa El Maadi / La Novia wedding venue");
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${fmt(start)}/${fmt(end)}&details=${details}&location=${location}`;
 }
 
-function readGuestFromURL(){
-  if(!INV.guestPersonalization) return null;
-  const url = new URL(window.location.href);
-  const g = url.searchParams.get("g");
-  return g ? g.trim() : null;
-}
-
-let current = 0;
-
-function setSlide(i){
-  const track = $("track");
-  const n = track.children.length;
-  current = Math.max(0, Math.min(i, n-1));
-  track.style.transform = `translateX(-${current * 100}%)`;
-  [...$("dots").children].forEach((d,idx)=>d.classList.toggle("active", idx===current));
-  try{ localStorage.setItem("inv_page", String(current)); }catch(e){}
-}
-
-function buildDots(){
-  const n = $("track").children.length;
-  const dots = $("dots");
-  dots.innerHTML = "";
-  for(let i=0;i<n;i++){
-    const d = document.createElement("div");
-    d.className = "dot" + (i===0 ? " active":"");
-    d.addEventListener("click", ()=>setSlide(i));
-    dots.appendChild(d);
-  }
-}
-
-function fillTimeline(){
-  const t = $("timeline");
-  t.innerHTML = "";
-  INV.timeline.forEach(item=>{
-    const row = document.createElement("div");
-    row.className = "row";
-    row.innerHTML = `
-      <div class="time">${item.time}</div>
-      <div class="desc">
-        <b>${item.title}</b>
-        <span>${item.note||""}</span>
-      </div>
-    `;
-    t.appendChild(row);
-  });
-}
-
 function updateCountdown(){
-  const target = new Date(INV.event.dateTimeISO).getTime();
+  const target = new Date(EVENT_ISO).getTime();
   const now = Date.now();
   let diff = Math.max(0, target - now);
 
@@ -762,6 +652,58 @@ function updateCountdown(){
   $("ss").textContent = pad(secs);
 }
 
+function fillTimeline(){
+  const timeline = [
+    { time: "5:00 PM",  title: "Ceremony",          note: "Church service" },
+    { time: "6:30 PM",  title: "Reception Arrival", note: "Villa — La Novia" },
+    { time: "6:45 PM",  title: "Welcome Drinks",    note: "Guests reception" },
+    { time: "7:15 PM",  title: "Grand Entrance",    note: "Zaffa" },
+    { time: "7:30 PM",  title: "Dancing",           note: "Let the party begin" },
+    { time: "8:15 PM",  title: "Champagne Moment",  note: "A toast to the night" },
+    { time: "8:45 PM",  title: "Dinner Buffet",     note: "Buffet opens" },
+    { time: "10:00 PM", title: "Surprise Dance",    note: "A special performance" },
+    { time: "10:30 PM", title: "Memories & Photos", note: "Lots of photos together" }
+  ];
+
+  const t = $("timeline");
+  t.innerHTML = "";
+  timeline.forEach(item=>{
+    const row = document.createElement("div");
+    row.className = "row";
+    row.innerHTML = `
+      <div class="time">${item.time}</div>
+      <div class="desc">
+        <b>${item.title}</b>
+        <span>${item.note||""}</span>
+      </div>
+    `;
+    t.appendChild(row);
+  });
+}
+
+/* ===== Smooth scroll navigation ===== */
+function initNavButtons(){
+  document.querySelectorAll("[data-goto]").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const id = btn.getAttribute("data-goto");
+      const el = document.getElementById(id);
+      if(el) el.scrollIntoView({behavior:"smooth", block:"start"});
+    });
+  });
+}
+
+/* ===== Guest personalization (?g=Name) ===== */
+function initGuest(){
+  const url = new URL(window.location.href);
+  const g = url.searchParams.get("g");
+  const pill = $("guestPill");
+  if(g && g.trim()){
+    pill.textContent = `Private Invitation for ${g.trim()}`;
+  } else {
+    pill.textContent = "Private Invitation";
+  }
+}
+
 /* ===== Music control (mobile-friendly) ===== */
 function initMusic(){
   const audio = $("bgm");
@@ -775,7 +717,6 @@ function initMusic(){
     audio.load();
     btn.style.display = "flex";
   }else{
-    // If no music URL, hide the control
     btn.style.display = "none";
     return;
   }
@@ -788,16 +729,15 @@ function initMusic(){
   btn.addEventListener("click", async ()=>{
     try{
       if(audio.paused){
-        await audio.play(); // requires user gesture (this click)
+        await audio.play();
         setUI(true);
       }else{
         audio.pause();
         setUI(false);
       }
     }catch(e){
-      // If browser blocks it for any reason
       setUI(false);
-      alert("Your browser blocked autoplay. Tap again to start the music.");
+      alert("Tap again to start the music.");
     }
   });
 
@@ -806,71 +746,25 @@ function initMusic(){
   setUI(false);
 }
 
-function init(){
+/* Init */
+(function init(){
   $("todayPill").textContent = new Date().toLocaleDateString("en-GB",{year:"numeric",month:"2-digit",day:"2-digit"});
+  $("miniSeal").textContent = "M";
+  $("btnAddCalendar").href = buildCalendarLink();
 
-  const guest = readGuestFromURL();
-  $("guestPill").textContent = guest ? `Private Invitation for ${guest}` : "Private Invitation";
-
-  $("miniSeal").textContent = (INV.couple.name1?.[0]||"M").toUpperCase();
-  $("names1").textContent = INV.couple.name1;
-  $("names2").textContent = INV.couple.name2;
-  $("sealInitials").textContent = INV.couple.initials;
-
-  const {dayName, dateStr} = formatDateParts(INV.event.dateTimeISO);
+  const {dayName, dateStr} = formatDateParts(EVENT_ISO);
   $("dateText").textContent = dateStr;
   $("dayText").textContent = dayName;
 
-  $("btnAddCalendar").href = buildCalendarLink();
-
   fillTimeline();
-  buildDots();
   updateCountdown();
   setInterval(updateCountdown, 1000);
 
-  try{
-    const saved = parseInt(localStorage.getItem("inv_page")||"0",10);
-    if(!Number.isNaN(saved)) setSlide(saved);
-  }catch(e){}
-
-  // buttons
-  $("btnNext1").onclick = ()=>setSlide(1);
-  $("btnPrev2").onclick = ()=>setSlide(0);
-  $("btnNext2").onclick = ()=>setSlide(2);
-  $("btnPrev3").onclick = ()=>setSlide(1);
-  $("btnNext3").onclick = ()=>setSlide(3);
-  $("btnPrev4").onclick = ()=>setSlide(2);
-  $("btnNext4").onclick = ()=>setSlide(4);
-  $("btnPrev5").onclick = ()=>setSlide(3);
-  $("btnFinish").onclick = ()=>setSlide(0);
-
-  // swipe
-  const slider = $("slider");
-  let startX=0, startY=0, dragging=false;
-
-  slider.addEventListener("touchstart",(e)=>{
-    const t = e.touches[0];
-    startX=t.clientX; startY=t.clientY;
-    dragging=true;
-  }, {passive:true});
-
-  slider.addEventListener("touchend",(e)=>{
-    if(!dragging) return;
-    dragging=false;
-    const t = e.changedTouches[0];
-    const dx = t.clientX - startX;
-    const dy = t.clientY - startY;
-    if(Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
-
-    // LTR: swipe left -> next
-    if(dx < 0) setSlide(current+1);
-    else setSlide(current-1);
-  }, {passive:true});
-
+  initNavButtons();
+  initGuest();
   initMusic();
-}
-
-init();
+})();
 </script>
+
 </body>
 </html>
