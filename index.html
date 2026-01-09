@@ -8,7 +8,6 @@
 
   <style>
     :root{
-      --bg:#f4f2ef;
       --card:#ffffffcc;
       --ink:#1f1f1f;
       --muted:#6b6b6b;
@@ -21,14 +20,34 @@
 
     *{box-sizing:border-box}
     html,body{height:100%}
+
+    /* ===== Background image + blur ===== */
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
       color:var(--ink);
-      background: radial-gradient(1100px 700px at 20% 0%, #fff, transparent 60%),
-                  radial-gradient(900px 600px at 80% 20%, #fff, transparent 55%),
-                  linear-gradient(180deg, #f6f4f1, #efeae3);
       overflow:hidden;
+      background:#f4f2ef;
+      position:relative;
+    }
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      background-image:url('https://i.postimg.cc/DZthvxcZ/92f685f7-1de6-4c9d-acd6-42ce4990e943.jpg');
+      background-size:cover;
+      background-position:center;
+      filter: blur(18px);
+      transform: scale(1.15);
+      opacity:.30;
+      z-index:-2;
+    }
+    body::after{
+      content:"";
+      position:fixed; inset:0;
+      background: radial-gradient(900px 600px at 20% 0%, rgba(255,255,255,.85), transparent 55%),
+                  radial-gradient(900px 600px at 80% 20%, rgba(255,255,255,.80), transparent 55%),
+                  linear-gradient(180deg, rgba(246,244,241,.90), rgba(239,234,227,.92));
+      z-index:-1;
     }
 
     .wrap{
@@ -38,6 +57,7 @@
       flex-direction:column;
     }
 
+    /* Top bar */
     .topbar{
       padding:14px 18px;
       display:flex;
@@ -45,10 +65,7 @@
       align-items:center;
       gap:10px;
     }
-    .brand{
-      display:flex; align-items:center; gap:10px;
-      letter-spacing:.5px;
-    }
+    .brand{display:flex; align-items:center; gap:10px; letter-spacing:.5px;}
     .seal{
       width:34px;height:34px;border-radius:999px;
       border:1px solid var(--stroke);
@@ -70,11 +87,8 @@
       backdrop-filter: blur(10px);
     }
 
-    .slider{
-      flex:1;
-      position:relative;
-      overflow:hidden;
-    }
+    /* Slider */
+    .slider{flex:1; position:relative; overflow:hidden;}
     .track{
       height:100%;
       display:flex;
@@ -91,8 +105,8 @@
       justify-content:center;
     }
     .card{
-      width:min(520px, 94vw);
-      height:min(760px, 76vh);
+      width:min(540px, 94vw);
+      height:min(780px, 78vh);
       background: var(--card);
       border:1px solid var(--stroke);
       border-radius: var(--radius);
@@ -112,20 +126,37 @@
 
     .content{
       height:100%;
-      padding:26px 22px;
+      padding:22px 22px 20px;
       display:flex;
       flex-direction:column;
       gap:16px;
     }
 
     h1,h2,h3,p{margin:0}
-    .mono{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;}
+
+    /* Cover image (sharp) with glass/blur overlay */
+    .cover-image{
+      width:100%;
+      height:240px;
+      border-radius:18px;
+      background-image: url('https://i.postimg.cc/DZthvxcZ/92f685f7-1de6-4c9d-acd6-42ce4990e943.jpg');
+      background-size: cover;
+      background-position: center;
+      position:relative;
+      overflow:hidden;
+      border:1px solid var(--stroke);
+      box-shadow: 0 10px 22px rgba(0,0,0,.06);
+    }
+    .cover-image::after{
+      content:"";
+      position:absolute; inset:0;
+      background: rgba(255,255,255,.20);
+      backdrop-filter: blur(6px);
     }
 
     .title{
       text-align:center;
-      margin-top:10px;
       display:flex;
       flex-direction:column;
       gap:8px;
@@ -149,14 +180,12 @@
       font-size:20px;
       margin:2px 0 0;
     }
-
     .divider{
       width:120px;
       height:1px;
       background: linear-gradient(90deg, transparent, var(--stroke), transparent);
       margin: 8px auto 0;
     }
-
     .bigSeal{
       width:82px;height:82px;border-radius:999px;
       border:1px solid var(--stroke);
@@ -210,6 +239,7 @@
       gap:10px;
       min-width: 170px;
       justify-content:center;
+      user-select:none;
     }
     .btn:active{transform: translateY(1px); box-shadow: 0 8px 14px rgba(0,0,0,.06);}
     .btn.primary{
@@ -219,7 +249,7 @@
 
     .grid{
       display:grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap:12px;
       margin-top:10px;
     }
@@ -257,7 +287,7 @@
       box-shadow: 0 10px 20px rgba(0,0,0,.05);
     }
     .time{
-      min-width:74px;
+      min-width:84px;
       font-weight:700;
       color:var(--accent);
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
@@ -298,9 +328,7 @@
     }
     .mapHead b{font-size:13px}
     .mapHead span{font-size:12px; color:var(--muted)}
-    .mapActions{
-      display:flex; gap:8px; flex-wrap:wrap;
-    }
+    .mapActions{display:flex; gap:8px; flex-wrap:wrap;}
     .miniBtn{
       border:1px solid var(--stroke);
       background:#ffffff;
@@ -312,7 +340,7 @@
       box-shadow: 0 8px 16px rgba(0,0,0,.05);
       white-space:nowrap;
     }
-    iframe{border:0; width:100%; height:200px}
+    iframe{border:0; width:100%; height:190px}
 
     .nav{
       padding: 12px 18px 18px;
@@ -330,6 +358,7 @@
       width:22px;
       background: rgba(199,176,139,.9);
     }
+
     .hint{
       position:absolute;
       left:50%;
@@ -354,15 +383,61 @@
       100%{opacity:0}
     }
 
+    /* Floating music button */
+    .music-fab{
+      position:fixed;
+      right:14px;
+      bottom:14px;
+      z-index:50;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .music-btn{
+      border:1px solid var(--stroke);
+      background:#ffffffd8;
+      backdrop-filter: blur(10px);
+      padding:12px 14px;
+      border-radius:999px;
+      box-shadow: 0 12px 26px rgba(0,0,0,.10);
+      cursor:pointer;
+      font-size:13px;
+      color:var(--ink);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      user-select:none;
+    }
+    .music-dot{
+      width:9px;height:9px;border-radius:99px;
+      background: rgba(0,0,0,.25);
+    }
+    .music-dot.on{ background: rgba(199,176,139,.95); }
+
     @media (max-width:420px){
       .names{font-size:34px}
-      .card{height:min(740px, 78vh)}
+      .card{height:min(760px, 80vh)}
       .btn{min-width: 160px}
+      .cover-image{height:220px}
     }
   </style>
 </head>
 
 <body>
+
+<!-- ===== Music (IMPORTANT: replace MUSIC_URL with your mp3 link) ===== -->
+<audio id="bgm" loop preload="auto" crossorigin="anonymous">
+  <!-- Example placeholder: put your MP3 direct link here -->
+  <source id="bgmSrc" src="" type="audio/mpeg">
+</audio>
+
+<div class="music-fab">
+  <div class="music-btn" id="musicToggle" title="Play / Pause Music">
+    <span class="music-dot" id="musicLed"></span>
+    <span id="musicText">Play Music</span>
+  </div>
+</div>
+
 <div class="wrap">
   <div class="topbar">
     <div class="brand">
@@ -379,6 +454,8 @@
       <section class="page">
         <div class="card">
           <div class="content">
+            <div class="cover-image"></div>
+
             <div class="title">
               <div class="subtitle" id="tagline">You are invited</div>
               <div class="names" id="names1">Marco</div>
@@ -394,9 +471,7 @@
 
             <div class="btnRow">
               <button class="btn primary" id="btnNext1">Begin / Swipe</button>
-              <a class="btn" id="btnAddCalendar" href="#" target="_blank" rel="noopener">
-                Add to Calendar
-              </a>
+              <a class="btn" id="btnAddCalendar" href="#" target="_blank" rel="noopener">Add to Calendar</a>
             </div>
           </div>
         </div>
@@ -412,7 +487,7 @@
               <div class="divider"></div>
             </div>
 
-            <p class="quote" id="storyLine">
+            <p class="quote">
               A formal celebration, and your presence would mean the world to us.
             </p>
 
@@ -422,20 +497,29 @@
                 <div class="v" id="dateText">—</div>
                 <div class="s" id="dayText">—</div>
               </div>
+
               <div class="tile">
                 <div class="k">Ceremony</div>
-                <div class="v" id="ceremonyTime">5:00 PM</div>
+                <div class="v">5:00 PM</div>
                 <div class="s">Church</div>
               </div>
+
               <div class="tile">
                 <div class="k">Reception</div>
-                <div class="v" id="receptionTime">6:30 PM</div>
-                <div class="s">Villa</div>
+                <div class="v">6:30 PM</div>
+                <div class="s">La Novia (Villa)</div>
               </div>
+
               <div class="tile">
                 <div class="k">Dress Code</div>
-                <div class="v" id="dressText">Formal</div>
+                <div class="v">Formal</div>
                 <div class="s">Kindly dress accordingly</div>
+              </div>
+
+              <div class="tile">
+                <div class="k">Parking</div>
+                <div class="v">Free Parking</div>
+                <div class="s">Available at the venue</div>
               </div>
             </div>
 
@@ -464,7 +548,7 @@
               <div class="tile"><div class="k">Seconds</div><div class="v" id="ss">—</div><div class="s">Seconds</div></div>
             </div>
 
-            <p class="quote" id="countLine" style="margin-top:12px">
+            <p class="quote" style="margin-top:12px">
               We cannot wait to celebrate with you.
             </p>
 
@@ -496,7 +580,7 @@
         </div>
       </section>
 
-      <!-- PAGE 5: LOCATIONS + RSVP -->
+      <!-- PAGE 5: LOCATIONS -->
       <section class="page">
         <div class="card">
           <div class="content">
@@ -510,40 +594,39 @@
               <div class="mapCard">
                 <div class="mapHead">
                   <div>
-                    <b id="churchName">Church</b><br/>
-                    <span id="churchSub">5:00 PM</span>
+                    <b>St. Anthony the Great Church — Zahraa El Maadi</b><br/>
+                    <span>5:00 PM — Ceremony</span>
                   </div>
                   <div class="mapActions">
-                    <a class="miniBtn" id="btnChurchMaps" href="#" target="_blank" rel="noopener">Open in Google Maps</a>
+                    <a class="miniBtn" href="https://maps.app.goo.gl/3tpzk1J72SNa438aA" target="_blank" rel="noopener">Open in Google Maps</a>
                   </div>
                 </div>
-                <iframe id="churchMap" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                  src="https://www.google.com/maps?q=St.%20Anthony%20the%20Great%20Church%20Zahraa%20El%20Maadi&output=embed"></iframe>
               </div>
 
               <div class="mapCard">
                 <div class="mapHead">
                   <div>
-                    <b id="venueName">La Novia wedding venue</b><br/>
-                    <span id="venueSub">6:30 PM</span>
+                    <b>La Novia wedding venue</b><br/>
+                    <span>6:30 PM — Reception</span>
                   </div>
                   <div class="mapActions">
-                    <a class="miniBtn" id="btnVenueMaps" href="#" target="_blank" rel="noopener">Open in Google Maps</a>
+                    <a class="miniBtn" href="https://maps.app.goo.gl/HqVEuU17rrmYpFe8A" target="_blank" rel="noopener">Open in Google Maps</a>
                   </div>
                 </div>
-                <iframe id="venueMap" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                  src="https://www.google.com/maps?q=La%20Novia%20wedding%20venue&output=embed"></iframe>
               </div>
             </div>
 
-            <p class="quote" style="margin-top:10px" id="locLine">
-              Formal attire is kindly requested. Please arrive on time.
+            <p class="quote" style="margin-top:10px">
+              Formal attire is kindly requested.<br/>
+              <b>Free parking is available at the venue.</b>
             </p>
 
             <div class="btnRow">
-              <a class="btn primary" id="btnRSVP" href="#" target="_blank" rel="noopener">RSVP</a>
               <button class="btn" id="btnPrev5">Back</button>
-            </div>
-
-            <div class="btnRow">
               <button class="btn primary" id="btnFinish">Done ✅</button>
             </div>
           </div>
@@ -560,93 +643,61 @@
 
 <script>
 /* =========================
-   DATA (already filled with your details)
+   EDIT THESE ONLY
 ========================= */
+const MUSIC_URL = ""; 
+// حط هنا لينك MP3 مباشر (ينتهي بـ .mp3). مثال:
+// const MUSIC_URL = "https://yourdomain.com/song.mp3";
+
 const INV = {
-  couple: {
-    name1: "Marco",
-    name2: "Martha",
-    initials: "M♥M",
-    tagline: "You are invited",
-    coverLine: "Together with their families, Marco and Martha invite you to celebrate their wedding."
-  },
+  couple: { name1: "Marco", name2: "Martha", initials: "M♥M" },
   event: {
-    // Ceremony time for countdown target (5:00 PM Cairo time)
+    // Countdown to ceremony time (Cairo)
     dateTimeISO: "2026-01-24T17:00:00+02:00",
-    dateDisplayLocale: "en-GB",
-    ceremonyTimeText: "5:00 PM",
-    receptionTimeText: "6:30 PM",
-    dressCode: "Formal"
-  },
-  locations: {
-    church: {
-      name: "St. Anthony the Great Church — Zahraa El Maadi",
-      time: "5:00 PM",
-      mapsLink: "https://maps.app.goo.gl/3tpzk1J72SNa438aA",
-      // Embed using a Google Maps search query (works without coordinates)
-      mapsEmbed: "https://www.google.com/maps?q=St.%20Anthony%20the%20Great%20Church%20Zahraa%20El%20Maadi&output=embed"
-    },
-    venue: {
-      name: "La Novia wedding venue",
-      time: "6:30 PM",
-      mapsLink: "https://maps.app.goo.gl/HqVEuU17rrmYpFe8A",
-      mapsEmbed: "https://www.google.com/maps?q=La%20Novia%20wedding%20venue&output=embed"
-    }
+    dateLocale: "en-GB"
   },
   timeline: [
-    { time: "5:00 PM", title: "Ceremony", note: "Church service" },
-    { time: "6:30 PM", title: "Reception Arrival", note: "Villa — La Novia" },
-    { time: "6:45 PM", title: "Welcome Drinks", note: "Guests reception" },
-    { time: "7:15 PM", title: "Grand Entrance", note: "Zaffa" },
-    { time: "7:30 PM", title: "First Dance & Party", note: "Dancing begins" },
-    { time: "8:15 PM", title: "Champagne Moment", note: "A toast to the night" },
-    { time: "8:45 PM", title: "Dinner Buffet", note: "Buffet opens" },
-    { time: "10:00 PM", title: "Surprise Dance", note: "A special performance" },
+    { time: "5:00 PM",  title: "Ceremony",          note: "Church service" },
+    { time: "6:30 PM",  title: "Reception Arrival", note: "Villa — La Novia" },
+    { time: "6:45 PM",  title: "Welcome Drinks",    note: "Guests reception" },
+    { time: "7:15 PM",  title: "Grand Entrance",    note: "Zaffa" },
+    { time: "7:30 PM",  title: "Dancing",           note: "Let the party begin" },
+    { time: "8:15 PM",  title: "Champagne Moment",  note: "A toast to the night" },
+    { time: "8:45 PM",  title: "Dinner Buffet",     note: "Buffet opens" },
+    { time: "10:00 PM", title: "Surprise Dance",    note: "A special performance" },
     { time: "10:30 PM", title: "Memories & Photos", note: "Lots of photos together" }
   ],
-  rsvp: {
-    // IMPORTANT: change the phone number to yours
-    link: "https://wa.me/201000000000?text=RSVP%20for%20Marco%20%26%20Martha%20%E2%80%94%2024%20Jan%202026"
-  },
-  guest: {
-    enablePersonalization: true // use ?g=Ahmed
-  }
+  guestPersonalization: true // use ?g=Ahmed
 };
 
 /* =========================
-   Helpers
+   Helpers / App
 ========================= */
 const $ = (id)=>document.getElementById(id);
 function pad(n){ return String(n).padStart(2,"0"); }
 
 function formatDateParts(iso){
   const d = new Date(iso);
-  const dayName = d.toLocaleDateString(INV.event.dateDisplayLocale,{weekday:"long"});
-  const dateStr = d.toLocaleDateString(INV.event.dateDisplayLocale,{year:"numeric", month:"long", day:"numeric"});
+  const dayName = d.toLocaleDateString(INV.event.dateLocale,{weekday:"long"});
+  const dateStr = d.toLocaleDateString(INV.event.dateLocale,{year:"numeric", month:"long", day:"numeric"});
   return { dayName, dateStr };
 }
 
 function buildCalendarLink(){
   const start = new Date(INV.event.dateTimeISO);
-  const end = new Date(start.getTime() + 2*60*60*1000); // +2 hours for ceremony block
+  const end = new Date(start.getTime() + 2*60*60*1000);
   const fmt = (dt)=>{
     const z = new Date(dt.getTime());
-    const yyyy = z.getUTCFullYear();
-    const mm = pad(z.getUTCMonth()+1);
-    const dd = pad(z.getUTCDate());
-    const hh = pad(z.getUTCHours());
-    const mi = pad(z.getUTCMinutes());
-    const ss = pad(z.getUTCSeconds());
-    return `${yyyy}${mm}${dd}T${hh}${mi}${ss}Z`;
+    return `${z.getUTCFullYear()}${pad(z.getUTCMonth()+1)}${pad(z.getUTCDate())}T${pad(z.getUTCHours())}${pad(z.getUTCMinutes())}${pad(z.getUTCSeconds())}Z`;
   };
-  const details = encodeURIComponent(`Wedding of ${INV.couple.name1} & ${INV.couple.name2}`);
-  const location = encodeURIComponent(`${INV.locations.church.name} — ${INV.locations.venue.name}`);
   const text = encodeURIComponent(`${INV.couple.name1} & ${INV.couple.name2} Wedding`);
+  const details = encodeURIComponent(`Wedding of ${INV.couple.name1} & ${INV.couple.name2}`);
+  const location = encodeURIComponent(`St. Anthony the Great Church — Zahraa El Maadi / La Novia wedding venue`);
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${fmt(start)}/${fmt(end)}&details=${details}&location=${location}`;
 }
 
 function readGuestFromURL(){
-  if(!INV.guest.enablePersonalization) return null;
+  if(!INV.guestPersonalization) return null;
   const url = new URL(window.location.href);
   const g = url.searchParams.get("g");
   return g ? g.trim() : null;
@@ -711,41 +762,66 @@ function updateCountdown(){
   $("ss").textContent = pad(secs);
 }
 
+/* ===== Music control (mobile-friendly) ===== */
+function initMusic(){
+  const audio = $("bgm");
+  const src = document.getElementById("bgmSrc");
+  const btn = $("musicToggle");
+  const led = $("musicLed");
+  const text = $("musicText");
+
+  if(MUSIC_URL && MUSIC_URL.trim()){
+    src.src = MUSIC_URL.trim();
+    audio.load();
+    btn.style.display = "flex";
+  }else{
+    // If no music URL, hide the control
+    btn.style.display = "none";
+    return;
+  }
+
+  const setUI = (playing)=>{
+    led.classList.toggle("on", playing);
+    text.textContent = playing ? "Pause Music" : "Play Music";
+  };
+
+  btn.addEventListener("click", async ()=>{
+    try{
+      if(audio.paused){
+        await audio.play(); // requires user gesture (this click)
+        setUI(true);
+      }else{
+        audio.pause();
+        setUI(false);
+      }
+    }catch(e){
+      // If browser blocks it for any reason
+      setUI(false);
+      alert("Your browser blocked autoplay. Tap again to start the music.");
+    }
+  });
+
+  audio.addEventListener("pause", ()=>setUI(false));
+  audio.addEventListener("play", ()=>setUI(true));
+  setUI(false);
+}
+
 function init(){
   $("todayPill").textContent = new Date().toLocaleDateString("en-GB",{year:"numeric",month:"2-digit",day:"2-digit"});
 
   const guest = readGuestFromURL();
   $("guestPill").textContent = guest ? `Private Invitation for ${guest}` : "Private Invitation";
 
+  $("miniSeal").textContent = (INV.couple.name1?.[0]||"M").toUpperCase();
   $("names1").textContent = INV.couple.name1;
   $("names2").textContent = INV.couple.name2;
   $("sealInitials").textContent = INV.couple.initials;
-  $("tagline").textContent = INV.couple.tagline;
-  $("coverLine").textContent = INV.couple.coverLine;
-  $("miniSeal").textContent = (INV.couple.name1?.[0]||"M").toUpperCase();
 
   const {dayName, dateStr} = formatDateParts(INV.event.dateTimeISO);
   $("dateText").textContent = dateStr;
   $("dayText").textContent = dayName;
 
-  $("ceremonyTime").textContent = INV.event.ceremonyTimeText;
-  $("receptionTime").textContent = INV.event.receptionTimeText;
-  $("dressText").textContent = INV.event.dressCode;
-
   $("btnAddCalendar").href = buildCalendarLink();
-
-  // Locations
-  $("churchName").textContent = INV.locations.church.name;
-  $("churchSub").textContent = `${INV.locations.church.time} — Ceremony`;
-  $("btnChurchMaps").href = INV.locations.church.mapsLink;
-  $("churchMap").src = INV.locations.church.mapsEmbed;
-
-  $("venueName").textContent = INV.locations.venue.name;
-  $("venueSub").textContent = `${INV.locations.venue.time} — Reception`;
-  $("btnVenueMaps").href = INV.locations.venue.mapsLink;
-  $("venueMap").src = INV.locations.venue.mapsEmbed;
-
-  $("btnRSVP").href = INV.rsvp.link;
 
   fillTimeline();
   buildDots();
@@ -790,6 +866,8 @@ function init(){
     if(dx < 0) setSlide(current+1);
     else setSlide(current-1);
   }, {passive:true});
+
+  initMusic();
 }
 
 init();
